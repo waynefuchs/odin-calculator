@@ -81,6 +81,7 @@ function doOperation() {
     let result = operator(a, b);
     result = calculatorRound(result, 15).toString();
     setCalculatorValuesToZero();
+    if(isNaN(result)) result = "lol you made mistake";
     setDisplay(lcdb, result);
 };
 

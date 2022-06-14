@@ -9,6 +9,7 @@ const lcda = document.querySelector('#lcd-a');
 const lcdb = document.querySelector('#lcd-b');
 const hideDisplay = (display) => display.style.visibility = "hidden";
 const showDisplay = (display) => display.style.visibility = "visible";
+const isDisplayHidden = (display) => display.style.visibility === "hidden";
 const setDisplay = (display, value) => display.textContent = value;
 const getDisplay = (display, value) => display.textContent;
 const hasDecimalInDisplay = () => lcdb.textContent.includes('.');
@@ -47,7 +48,6 @@ const setCalculatorValuesToZero = (includeMemory=false) => {
     setDisplay(lcda, 0);
     setDisplay(lcdb, 0);
     hideDisplay(lcda);
-    setDisableOperator(false);
     isOperatorActive = false;
 }; setCalculatorValuesToZero();
 
@@ -58,24 +58,19 @@ const operators = {
     "minus": calculatorSubtract,
     "plus": calculatorAdd,
 };
-function setDisableOperator(value) {
-    if(value === isOperatorActive) return;
-
-    isOperatorActive = value;
-
-    if(value) operatorButtons.forEach(button => button.classList.add('dim'));
-    else operatorButtons.forEach(button => button.classList.remove('dim'));
-};
 const setOperator = (op) => {
-    if(isOperatorActive) return;
+    if(isOperatorActive) {
+        doOperation();
+        isOperatorActive = false;
+    }
 
-    setDisableOperator(true);
     operator = operators[op];
     setDisplay(lcda, getDisplay(lcdb));
     setDisplay(lcdb, 0);
     showDisplay(lcda);
+    isOperatorActive = true;
 };
-const doOperation = () => {
+function doOperation() {
     const a = Number(getDisplay(lcda));
     const b = Number(getDisplay(lcdb));
     if(isNaN(a) || isNaN(b)) {
@@ -83,8 +78,8 @@ const doOperation = () => {
         return;
     }
     console.log(operator);
-    const result = operator(a, b);
-    console.log(result);
+    let result = operator(a, b);
+    result = calculatorRound(result, 15).toString();
     setCalculatorValuesToZero();
     setDisplay(lcdb, result);
 };
@@ -123,3 +118,9 @@ const wireButtons = () => {
     const buttons = document.querySelectorAll('.button');
     buttons.forEach(button => button.addEventListener('click', buttonPressed));
 }; wireButtons();
+
+
+// Not a good rounding function, but better than nothing.
+function calculatorRound(num, places) {
+    return parseFloat(Math.round(num + 'e' + places) + 'e-' + places);
+}

@@ -1,15 +1,10 @@
-// 1. Create functions for: add, subtract, multiply, divide
+// arrow functions to do the actual calculation
 const calculatorAdd = (a, b) => a + b;
 const calculatorSubtract = (a, b) => a - b;
 const calculatorMultiply = (a, b) => a * b;
 const calculatorDivide = (a, b) => a / b;
+const calculatorOperate = (f, a, b) => f(a, b);  // I decided to use a different method
 
-// 2. Create `operate` function
-const calculatorOperate = (f, a, b) => f(a, b);
-
-// 3. See: `index.html`
-
-// 4. Update the display
 const lcda = document.querySelector('#lcd-a');
 const lcdb = document.querySelector('#lcd-b');
 const hideDisplay = (display) => display.style.visibility = "hidden";
@@ -35,15 +30,15 @@ const addToDisplay = (value) => {
             : lcdb.textContent + value;
 };
 
-// 5.0.1. Figure out where to store everything
+// Variables holding the calculator stuff
 let isOperatorActive;
 let operandA;
 let operandB;
 let operator;
 let result;
 let memory;
+const operatorButtons = document.querySelectorAll('.operator');
 const setCalculatorValuesToZero = (includeMemory=false) => {
-    isOperatorActive = false;
     operandA = 0;
     operandB = 0;
     operator = undefined;
@@ -52,6 +47,8 @@ const setCalculatorValuesToZero = (includeMemory=false) => {
     setDisplay(lcda, 0);
     setDisplay(lcdb, 0);
     hideDisplay(lcda);
+    setDisableOperator(false);
+    isOperatorActive = false;
 }; setCalculatorValuesToZero();
 
 // 5.2. Make the operators work
@@ -61,10 +58,18 @@ const operators = {
     "minus": calculatorSubtract,
     "plus": calculatorAdd,
 };
+function setDisableOperator(value) {
+    if(value === isOperatorActive) return;
+
+    isOperatorActive = value;
+
+    if(value) operatorButtons.forEach(button => button.classList.add('dim'));
+    else operatorButtons.forEach(button => button.classList.remove('dim'));
+};
 const setOperator = (op) => {
     if(isOperatorActive) return;
 
-    isOperatorActive = true;
+    setDisableOperator(true);
     operator = operators[op];
     setDisplay(lcda, getDisplay(lcdb));
     setDisplay(lcdb, 0);
@@ -82,13 +87,11 @@ const doOperation = () => {
     console.log(result);
     setCalculatorValuesToZero();
     setDisplay(lcdb, result);
-    isOperatorActive = false;
 };
 
-// 5.0.2. Wire up the JS to the HTML
+// Wire up the JS to the HTML
 const buttonPressed = (e) => {
     const buttonAction = e.target.id.includes('-') ? e.target.id.split('-')[1] : e.target.id;
-    console.log(buttonAction);
     switch(buttonAction) {
         case "negative":
             negativeDisplay();

@@ -76,7 +76,11 @@ h1 {
     border: 10px solid whitesmoke;
 }
 
-.disable {
+.dim {
+    background-color: grey;
+    border: 10px solid white;
+}
+.dim:hover {
     background-color: grey;
     border: 10px solid white;
 }

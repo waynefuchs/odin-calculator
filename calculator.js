@@ -12,6 +12,8 @@ const calculatorOperate = (f, a, b) => f(a, b);
 // 4. Update the display
 const lcda = document.querySelector('#lcd-a');
 const lcdb = document.querySelector('#lcd-b');
+const hideDisplay = (display) => display.style.visibility = "hidden";
+const showDisplay = (display) => display.style.visibility = "visible";
 const setDisplay = (display, value) => display.textContent = value;
 const getDisplay = (display, value) => display.textContent;
 const hasDecimalInDisplay = () => lcdb.textContent.includes('.');
@@ -34,18 +36,14 @@ const addToDisplay = (value) => {
 };
 
 // 5.0.1. Figure out where to store everything
+let isOperatorActive;
 let operandA;
 let operandB;
 let operator;
 let result;
 let memory;
-const setOperator = (op) => {
-    console.log("???");
-    operator = op;
-    setDisplay(lcda, getDisplay(lcdb));
-    setDisplay(lcdb, 0);
-};
 const setCalculatorValuesToZero = (includeMemory=false) => {
+    isOperatorActive = false;
     operandA = 0;
     operandB = 0;
     operator = undefined;
@@ -53,16 +51,39 @@ const setCalculatorValuesToZero = (includeMemory=false) => {
     if(includeMemory) memory = [];
     setDisplay(lcda, 0);
     setDisplay(lcdb, 0);
+    hideDisplay(lcda);
 }; setCalculatorValuesToZero();
 
 // 5.2. Make the operators work
 const operators = {
-    divide: 0,
-    multiply: 0,
-    minus: 0,
-    plus: 0,
+    "divide": calculatorDivide,
+    "multiply": calculatorMultiply,
+    "minus": calculatorSubtract,
+    "plus": calculatorAdd,
 };
+const setOperator = (op) => {
+    if(isOperatorActive) return;
 
+    isOperatorActive = true;
+    operator = operators[op];
+    setDisplay(lcda, getDisplay(lcdb));
+    setDisplay(lcdb, 0);
+    showDisplay(lcda);
+};
+const doOperation = () => {
+    const a = Number(getDisplay(lcda));
+    const b = Number(getDisplay(lcdb));
+    if(isNaN(a) || isNaN(b)) {
+        console.error(`Not a number! (${getDisplay(lcda)})::(${getDisplay(lcdb)})`);
+        return;
+    }
+    console.log(operator);
+    const result = operator(a, b);
+    console.log(result);
+    setCalculatorValuesToZero();
+    setDisplay(lcdb, result);
+    isOperatorActive = false;
+};
 
 // 5.0.2. Wire up the JS to the HTML
 const buttonPressed = (e) => {
@@ -79,10 +100,10 @@ const buttonPressed = (e) => {
         case "multiply":
         case "minus":
         case "plus":
-            console.log("???!!!");
             setOperator(buttonAction);
             break;
         case "equal":
+            doOperation();
             break;
         case "allclear":
             setCalculatorValuesToZero();

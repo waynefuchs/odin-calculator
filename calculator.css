@@ -6,6 +6,13 @@
     --button-size: 100px;
 }
 
+#calculator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
 header,
 main {
     text-align: center;
@@ -67,4 +74,9 @@ h1 {
 .button:hover {
     background-color: lightgreen;
     border: 10px solid whitesmoke;
+}
+
+.disable {
+    background-color: grey;
+    border: 10px solid white;
 }

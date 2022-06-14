@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@700&display=swap');
+* {
+    font-family: 'Kanit';
+    font-size: 40px;
+    color: white;
+    --button-size: 100px;
+}
+
+header,
+main {
+    text-align: center;
+    width: calc(var(--button-size) * 4 + 30px);
+}
+
+h1 {
+    color: green;
+    text-align: center;
+}
+
+#display {
+    display: flex;
+    flex-direction: column;
+
+    background-color: white;
+    padding: 0 0 10px 0;
+    gap: 10px;
+}
+#lcd-a,
+#lcd-b {
+    background-color: grey;
+    border-radius: 25px;
+    border: 10px solid lightgreen;
+    padding: 0 10px 0 0;
+
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+
+#buttons {
+    display: inline-grid;
+/*    grid-template-columns: repeat(4);*/
+    grid-template-columns: var(--button-size) var(--button-size) var(--button-size) var(--button-size);
+    grid-template-rows: var(--button-size) var(--button-size) var(--button-size) var(--button-size) var(--button-size);
+    gap: 10px;
+
+    justify-content: center;
+    align-items: center;
+}
+
+#key-0 {
+    grid-column-start: 1;
+    grid-column-end: 3;
+}
+
+.button {
+    background-color: green;
+    border-radius: 25px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 10px solid lightgreen;
+    height: calc(var(--button-size) - 20px);
+}
+
+.button:hover {
+    background-color: lightgreen;
+    border: 10px solid whitesmoke;
+}

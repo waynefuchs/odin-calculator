@@ -4,12 +4,6 @@
     font-size: 40px;
     color: var(--c4);
     --button-size: 100px;
-    /* --c1: #F25C05;
-    --c2: #8C3908;
-    --c3: #F24405;
-    --c4: #F2F2F2;
-    --c5: #262626;
-    --bg: #101010; */
     --c1: #A0BF30;
     --c2: #9CA656;
     --c3: #595959;
@@ -64,6 +58,10 @@ main {
     display: flex;
     justify-content: right;
     align-items: center;
+}
+
+lcd-a {
+    visibility: hidden;
 }
 
 #buttons {

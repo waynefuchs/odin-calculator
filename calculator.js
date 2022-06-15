@@ -30,6 +30,10 @@ const addToDisplay = (value) => {
             ? (value === ".") ? '0.' : value 
             : lcdb.textContent + value;
 };
+const removeFromDisplay = () => {
+    if(lcdb.textContent.length >= 1) lcdb.textContent = lcdb.textContent.slice(0, -1);
+    if(lcdb.textContent.length == 0) lcdb.textContent = "0";
+}
 
 // Handle Keyboard Input
 const validNumbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -45,6 +49,8 @@ const parseInput = (key) => {
     else if(key === ".") addToDisplay('.');
     else if(key === "%") percentDisplay();
     else if(key === "n") negativeDisplay();
+    else if(key === "Backspace") removeFromDisplay();
+    else console.log(key);
 };
 window.addEventListener('keydown', handleKeyboardInput);
 

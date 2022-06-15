@@ -27,9 +27,26 @@ const addToDisplay = (value) => {
     if(conversion > 9007199254740991) return;
     lcdb.textContent = 
         (lcdb.textContent === "0") 
-            ? value 
+            ? (value === ".") ? '0.' : value 
             : lcdb.textContent + value;
 };
+
+// Handle Keyboard Input
+const validNumbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+const validOperators = ["*", "/", "+", "-"];
+const handleKeyboardInput = (e) => {
+    parseInput(e.key);
+};
+const parseInput = (key) => {
+    if(key in validNumbers) addToDisplay(key);
+    else if(validOperators.includes(key)) setOperator(key);
+    else if(key === "Escape") setCalculatorValuesToZero();
+    else if(key === "Enter" || key === "=") doOperation();
+    else if(key === ".") addToDisplay('.');
+    else if(key === "%") percentDisplay();
+    else if(key === "n") negativeDisplay();
+};
+window.addEventListener('keydown', handleKeyboardInput);
 
 // Variables holding the calculator stuff
 let isOperatorActive;
@@ -53,10 +70,10 @@ const setCalculatorValuesToZero = (includeMemory=false) => {
 
 // 5.2. Make the operators work
 const operators = {
-    "divide": calculatorDivide,
-    "multiply": calculatorMultiply,
-    "minus": calculatorSubtract,
-    "plus": calculatorAdd,
+    "/": calculatorDivide,
+    "*": calculatorMultiply,
+    "-": calculatorSubtract,
+    "+": calculatorAdd,
 };
 const setOperator = (op) => {
     if(isOperatorActive) {
@@ -77,7 +94,6 @@ function doOperation() {
         console.error(`Not a number! (${getDisplay(lcda)})::(${getDisplay(lcdb)})`);
         return;
     }
-    console.log(operator);
     let result = operator(a, b);
     result = calculatorRound(result, 15).toString();
     setCalculatorValuesToZero();
@@ -86,34 +102,10 @@ function doOperation() {
 };
 
 // Wire up the JS to the HTML
+// (Button Click)
 const buttonPressed = (e) => {
-    const buttonAction = e.target.id.includes('-') ? e.target.id.split('-')[1] : e.target.id;
-    switch(buttonAction) {
-        case "negative":
-            negativeDisplay();
-            return;
-        case "percent":
-            percentDisplay();
-            return;
-        case "divide":
-        case "multiply":
-        case "minus":
-        case "plus":
-            setOperator(buttonAction);
-            break;
-        case "equal":
-            doOperation();
-            break;
-        case "allclear":
-            setCalculatorValuesToZero();
-            return;
-        case "decimal":
-            if(!hasDecimalInDisplay()) addToDisplay('.');
-            return;
-        default:
-            if(buttonAction.match(/^[0-9]$/)) addToDisplay(buttonAction);
-            return;
-    }
+    const key = e.target.id.includes('_') ? e.target.id.split('_')[1] : e.target.id;
+    parseInput(key);
 }
 const wireButtons = () => {
     const buttons = document.querySelectorAll('.button');

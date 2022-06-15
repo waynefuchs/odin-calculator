@@ -2,8 +2,24 @@
 * {
     font-family: 'Kanit';
     font-size: 40px;
-    color: white;
+    color: var(--c4);
     --button-size: 100px;
+    /* --c1: #F25C05;
+    --c2: #8C3908;
+    --c3: #F24405;
+    --c4: #F2F2F2;
+    --c5: #262626;
+    --bg: #101010; */
+    --c1: #A0BF30;
+    --c2: #9CA656;
+    --c3: #595959;
+    --c4: #F2F2F2;
+    --c5: #262626;
+    --bg: #101010;
+}
+
+body {
+    background-color: var(--bg);
 }
 
 #calculator {
@@ -24,19 +40,25 @@ h1 {
     text-align: center;
 }
 
+main {
+    background-color: var(--c5);
+    padding: 20px;
+    border-radius: 25px;
+}
+
 #display {
     display: flex;
     flex-direction: column;
 
-    background-color: white;
+    background-color: var(--c5);
     padding: 0 0 10px 0;
     gap: 10px;
 }
 #lcd-a,
 #lcd-b {
-    background-color: grey;
+    background-color: var(--c5);
     border-radius: 25px;
-    border: 10px solid lightgreen;
+    border: 10px solid var(--c2);
     padding: 0 10px 0 0;
 
     display: flex;
@@ -60,27 +82,27 @@ h1 {
     grid-column-end: 3;
 }
 
-.button {
-    background-color: green;
+.operator {
+    background-color: var(--c5);
+    border: 10px solid var(--c2);
+}
+.operator:hover {
+    background-color: var(--c2);
+    border: 10px solid var(--c2);
+}
+
+button {
+    background-color: var(--c2);
+    border: 10px solid var(--c2);
     border-radius: 25px;
 
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 10px solid lightgreen;
     height: calc(var(--button-size) - 20px);
 }
 
-.button:hover {
-    background-color: lightgreen;
-    border: 10px solid whitesmoke;
-}
-
-.dim {
-    background-color: grey;
-    border: 10px solid white;
-}
-.dim:hover {
-    background-color: grey;
-    border: 10px solid white;
+button:hover {
+    background-color: var(--c3);
+    border: 10px solid var(--c4);
 }

@@ -50,7 +50,7 @@ const parseInput = (key) => {
     else if(key === "%") percentDisplay();
     else if(key === "n") negativeDisplay();
     else if(key === "Backspace") removeFromDisplay();
-    else console.log(key);
+    // else console.log(key);
 };
 window.addEventListener('keydown', handleKeyboardInput);
 
@@ -100,7 +100,9 @@ function doOperation() {
         console.error(`Not a number! (${getDisplay(lcda)})::(${getDisplay(lcdb)})`);
         return;
     }
-    let result = operator(a, b);
+
+    let result = operator(Number(a), Number(b));
+    console.log(`a:'${a}' b:'${b}' result:'${result}'`);
     result = calculatorRound(result, 15).toString();
     setCalculatorValuesToZero();
     if(isNaN(result)) result = "divide by zero?";
